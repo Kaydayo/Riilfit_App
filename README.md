@@ -1,73 +1,122 @@
 <p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
+<img width="300" src="https://iili.io/yR08Ff.png">
 </p>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
+<p align="center">
+  <img src="https://github.com/amplication/amplication/workflows/Node.js%20CI/badge.svg" alt="Node.js CI">
+  <a href="https://amplication.com/discord">
+    <img src="https://img.shields.io/discord/757179260417867879?label=discord" alt="Discord">
+  </a>
+  <a href="CODE_OF_CONDUCT.md">
+    <img src="https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg" alt="Contributor Covenant">
+  </a>
+  <a href="https://opensource.org/licenses/Apache-2.0">
+    <img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" alt="License">
+  </a>
+  <img alt="GitHub release (latest by date)" src="https://img.shields.io/github/v/release/amplication/amplication?color=purple"/>
 </p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
-## Description
+<div align="center">
+ 
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![All Contributors](https://img.shields.io/badge/all_contributors-80-orange.svg?style=flat-square)](#contributors-)
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+  </div>
 
-## Installation
+<div align="center">
 
-```bash
-$ npm install
+<a href="https://freeimage.host/"><img src="https://iili.io/yREBqu.png" alt="yREBqu.png" border="0"></a>
+<a href="https://freeimage.host/"><img src="https://iili.io/yREKX9.png" alt="yREKX9.png" border="0"></a>
+<a href="https://freeimage.host/"><img src="https://iili.io/yREC0b.png" alt="yREC0b.png" border="0"></a>
+<a href="https://freeimage.host/"><img src="https://iili.io/yREFz7.png" alt="yREFz7.png" border="0"></a>
+
+</div>
+
+[Riilfit](https://Rillfit.com/) is an application that enables vendors and users attain physical fitness, designed to keep fit and healthy .
+
+
+# Features
+
+Amplication provides the following features:
+
+- Gym
+- Store
+- Train
+- Locate Gym
+- Buy online
+- Target dream fitness
+- Personal trainer
+- Gym equipment and gears 
+
+
+# Getting Started
+
+You can get started with riilfit immediately.
+
+Alternatively you can set up a local development environment.
+
+
+## Riilfit Postman Docs 
+
+Api Documentation [riilfit](http://app.riilfit/)
+
+## Development Environment (Local)
+
+### System Requirements
+
+:bulb: Before you begin, make sure you have the following installed:
+
+- [Node.js v16 or above](https://nodejs.org/en/download/)
+- [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git/)
+
+### Initializing all the packages
+
+Amplication is using a monorepo with multiple packages. To initialize all the packages on a local development environment, including running a docker image for the DB and seeding the DB.
+
+1. Execute the following commands in the project root folder:
+
+```jsx
+npm install
+npm run start:dev
 ```
 
-## Running the app
+This will install all the required dependencies, run the necessary scripts and init a Docker-based Postgres server.
 
-```bash
-# development
-$ npm run start
+2. Go to `.../src` and execute the following command:
 
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+```jsx
+npm run start
 ```
 
-## Test
+3. Go to `.../src` and execute the following command:
 
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+```jsx
+npm run start:dev
 ```
 
-## Support
+# Version 1
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+Riilfit is currently in its version 1. This is the first major release of its production. In this version, we have introduced multiple new features and enhanced the existing ones. The feature set is listed above in the [Features](#features) section.
 
-## Stay in touch
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+# Contributors ✨
 
-## License
+Thanks goes to this wonderful human([:hugs:](https://allcontributors.org/docs/en/emoji-key)):
 
-Nest is [MIT licensed](LICENSE).
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tr>
+    <td align="center"><img src="https://github.com/Kaydayo.png" width="100px;" alt=""/><br /><sub><b>Adebowale Mujeeb</b></sub><br /><a href="https://github.com/Kaydayo" title="Code">💻</a></td>
+   </tr>
+  
+</table>
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+
