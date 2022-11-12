@@ -14,7 +14,7 @@ export class SignUpDto{
 
     @IsNotEmpty()
     @IsPhoneNumber('NG')
-    phone: string;
+    phoneNumber: string;
 
     @MinLength(4)
     @MaxLength(20)
