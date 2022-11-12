@@ -1,4 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import BaseService from '../service/base.service';
@@ -9,16 +10,17 @@ import { User } from './schemas/user.schema';
 @Injectable()
 export class UserService extends BaseService {
     constructor(
-        @InjectModel(User.name) private userModel: Model<User>
+        @InjectModel(User.name) private userModel: Model<User>,
+        private readonly configService: ConfigService
     ) {
         super()
     }
 
-    async create(payload: SignUpDto): Promise<ResponseDTO>{
+    async create(payload: SignUpDto): Promise<ResponseDTO> {
         try {
             const { email, phoneNumber } = payload
             const user = await this.userModel.findOne({ email, phoneNumber })
-            
+
             if (user) {
                 throw new HttpException('email/phoneNumber already exists', HttpStatus.BAD_REQUEST);
             }

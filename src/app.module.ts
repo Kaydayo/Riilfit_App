@@ -4,11 +4,15 @@ import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { User, UserSchema } from './user/schemas/user.schema';
 import { ConfigModule } from '@nestjs/config';
+import config from './config/configuration'
 
-console.log(process.env.SECRET_KEY, "jjvejvff")
+
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({
+      isGlobal: true,
+      load:[config]
+    }),
     MongooseModule.forRoot('mongodb://localhost/riilfit'),
     UserModule,
     AuthModule],
