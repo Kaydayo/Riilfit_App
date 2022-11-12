@@ -8,13 +8,14 @@ import { User, UserSchema } from '../user/schemas/user.schema';
 import { HashService } from '../user/hash.service';
 import { JwtStrategy } from './jwt.strategy';
 import { FacebookStrategy } from './facebook.strategy';
+import { GoogleStrategy } from './google.strategy';
 
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
     forwardRef(() => UserModule)
   ],
-  providers: [AuthService,UserService, HashService, JwtStrategy, FacebookStrategy],
+  providers: [AuthService,UserService, HashService, JwtStrategy, FacebookStrategy, GoogleStrategy],
   controllers: [AuthController],
   exports:[AuthService]
 })

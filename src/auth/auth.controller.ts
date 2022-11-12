@@ -1,6 +1,7 @@
 import { Body, Controller, Get, HttpStatus, Logger, Post, Req, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Request } from '../client/request';
+import { GoogleOAuthGuard } from '../guards/google-oauth.guard';
 import BaseService from '../service/base.service';
 import { SignUpDto } from '../user/dto/sign-up.dto';
 import { UserService } from '../user/user.service';
@@ -39,5 +40,15 @@ export class AuthController extends BaseService {
     async facebookLoginRedirect(@Req() req: Request): Promise<any> {
         return this.userService.registerByFacebook(req.user['user'])
        
+    }
+
+    @Get("/google")
+    @UseGuards(GoogleOAuthGuard)
+    async googleAuth(@Req() req:Request) { }
+
+    @Get('/google/redirect')
+    @UseGuards(GoogleOAuthGuard)
+    googleAuthRedirect(@Req() req:Request) {
+        // return this.appService.googleLogin(req);
     }
 }
