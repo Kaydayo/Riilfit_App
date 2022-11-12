@@ -44,11 +44,13 @@ export class AuthController extends BaseService {
 
     @Get("/google")
     @UseGuards(GoogleOAuthGuard)
-    async googleAuth(@Req() req:Request) { }
+    async googleAuth(@Req() req: Request): Promise<any> { 
+        return HttpStatus.OK;
+    }
 
     @Get('/google/redirect')
     @UseGuards(GoogleOAuthGuard)
     googleAuthRedirect(@Req() req:Request) {
-        // return this.appService.googleLogin(req);
+        console.log(req.user)
     }
 }

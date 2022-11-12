@@ -41,6 +41,9 @@ export class User {
     
     @Prop({ defaul: REGISTEROPTIONS.APP, enum: REGISTEROPTIONS })
     signOn: REGISTEROPTIONS
+
+    @Prop()
+    socialId: string;
   
 }
 

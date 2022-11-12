@@ -5,8 +5,9 @@ import { Model } from 'mongoose';
 import { AuthService } from '../auth/auth.service';
 import { LoginDto } from '../auth/dto/login.dto';
 import BaseService from '../service/base.service';
+import { REGISTEROPTIONS } from '../utils/enum';
 import { ResponseDTO } from '../utils/response.dto';
-import { FacebookPayload, Payload } from '../utils/types';
+import { FacebookPayload, GooglePayload, Payload } from '../utils/types';
 import { SignUpDto } from './dto/sign-up.dto';
 import { HashService } from './hash.service';
 import { User } from './schemas/user.schema';
@@ -90,7 +91,7 @@ export class UserService extends BaseService {
 
     async registerByFacebook(payload: FacebookPayload): Promise<ResponseDTO> {
         try {
-            const user = await this.userModel.findOne({ email: payload.email }, { _id: 0, _v: 0 }).exec()
+            const user = await this.userModel.findOne({ email: payload.email, socialId:payload.id }, { _id: 0, _v: 0 }).exec()
             if (user) {
                 const parsedUser = this.sanitizeUser(user);
 
@@ -101,9 +102,11 @@ export class UserService extends BaseService {
                 return this.sendSuccessResponse({ user:parsedUser, token }, " facebook log in successful")
             }
 
-            const newFacebookUser = {
+            const newFacebookUser:Partial<User> = {
                 email: payload.email,
-                fullname: payload.firstName + ' ' + payload.lastName,
+                fullName: payload.firstName + ' ' + payload.lastName,
+                signOn: REGISTEROPTIONS.FACEBOOK,
+                socialId: payload.id
             }
 
             const createdUser = new this.userModel(newFacebookUser);
@@ -122,6 +125,44 @@ export class UserService extends BaseService {
 
         } catch (error) {
             return this.sendFailedResponse({},"Facebook login unsuccessful")
+        }
+    }
+
+    async registerByGoogle(payload: GooglePayload): Promise<ResponseDTO>{
+        try {
+            const user = await this.userModel.findOne({ email: payload.email, socialId: payload.id }, { _id: 0, _v: 0 }).exec()
+            if (user) {
+                const parsedUser = this.sanitizeUser(user);
+
+                const jwtPayload = {
+                    email: user.email,
+                };
+                const token = await this.authService.signPayload(jwtPayload);
+                return this.sendSuccessResponse({ user: parsedUser, token }, " google log in successful")
+            }
+
+            const newGoogleUser: Partial<User> = {
+                email: payload.email,
+                fullName: payload.firstName + ' ' + payload.lastName,
+                signOn: REGISTEROPTIONS.GOOGLE,
+                socialId: payload.id
+            }
+
+            const createdUser = new this.userModel(newGoogleUser);
+            await createdUser.save();
+
+            const parsedUser = this.sanitizeUser(createdUser);
+
+            const jwtPayload = {
+                email: user.email,
+            };
+            
+
+            const token = await this.authService.signPayload(jwtPayload);
+        
+            return this.sendSuccessResponse({ user: parsedUser, token }, "google log in successfully");
+        } catch (error) {
+            return this.sendFailedResponse({}, "Facebook login unsuccessful")
         }
     }
 
