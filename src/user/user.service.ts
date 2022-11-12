@@ -91,7 +91,7 @@ export class UserService extends BaseService {
 
     async registerByFacebook(payload: FacebookPayload): Promise<ResponseDTO> {
         try {
-            const user = await this.userModel.findOne({ email: payload.email, socialId:payload.id }, { _id: 0, _v: 0 }).exec()
+            const user = await this.userModel.findOne({ email: payload.email}, { _id: 0, _v: 0 }).exec()
             if (user) {
                 const parsedUser = this.sanitizeUser(user);
 
@@ -106,7 +106,8 @@ export class UserService extends BaseService {
                 email: payload.email,
                 fullName: payload.firstName + ' ' + payload.lastName,
                 signOn: REGISTEROPTIONS.FACEBOOK,
-                socialId: payload.id
+                socialId: payload.id,
+                phoneNumber: " "
             }
 
             const createdUser = new this.userModel(newFacebookUser);
@@ -115,7 +116,7 @@ export class UserService extends BaseService {
             const parsedUser = this.sanitizeUser(createdUser);
 
             const jwtPayload = {
-                email: user.email,
+                email: parsedUser.email,
             };
             this.logger.log(user)
 
@@ -128,9 +129,9 @@ export class UserService extends BaseService {
         }
     }
 
-    async registerByGoogle(payload: GooglePayload): Promise<ResponseDTO>{
+    async registerByGoogle(payload: any): Promise<ResponseDTO>{
         try {
-            const user = await this.userModel.findOne({ email: payload.email, socialId: payload.id }, { _id: 0, _v: 0 }).exec()
+            const user = await this.userModel.findOne({ email: payload.email }, { _id: 0, _v: 0 }).exec()
             if (user) {
                 const parsedUser = this.sanitizeUser(user);
 
@@ -145,7 +146,8 @@ export class UserService extends BaseService {
                 email: payload.email,
                 fullName: payload.firstName + ' ' + payload.lastName,
                 signOn: REGISTEROPTIONS.GOOGLE,
-                socialId: payload.id
+                socialId: payload.id,
+                phoneNumber:" "
             }
 
             const createdUser = new this.userModel(newGoogleUser);
@@ -154,7 +156,7 @@ export class UserService extends BaseService {
             const parsedUser = this.sanitizeUser(createdUser);
 
             const jwtPayload = {
-                email: user.email,
+                email: parsedUser.email,
             };
             
 
@@ -162,6 +164,7 @@ export class UserService extends BaseService {
         
             return this.sendSuccessResponse({ user: parsedUser, token }, "google log in successfully");
         } catch (error) {
+            console.log(error)
             return this.sendFailedResponse({}, "Facebook login unsuccessful")
         }
     }

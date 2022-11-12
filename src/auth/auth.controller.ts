@@ -38,7 +38,7 @@ export class AuthController extends BaseService {
     @Get("/facebook/redirect")
     @UseGuards(AuthGuard("facebook"))
     async facebookLoginRedirect(@Req() req: Request): Promise<any> {
-        return this.userService.registerByFacebook(req.user['user'])
+        return await this.userService.registerByFacebook(req.user['user'])
        
     }
 
@@ -50,7 +50,7 @@ export class AuthController extends BaseService {
 
     @Get('/google/redirect')
     @UseGuards(GoogleOAuthGuard)
-    googleAuthRedirect(@Req() req:Request) {
-        console.log(req.user)
+    async googleAuthRedirect(@Req() req:Request):Promise<ResponseDTO> {
+      return await this.userService.registerByGoogle(req.user)
     }
 }

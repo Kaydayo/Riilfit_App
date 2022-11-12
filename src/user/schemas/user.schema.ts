@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { IsEmail, IsPhoneNumber } from 'class-validator';
+import { IsEmail, IsOptional, IsPhoneNumber } from 'class-validator';
 import { Document } from 'mongoose';
 import { REGISTEROPTIONS, USERROLES } from '../../utils/enum';
 
@@ -29,11 +29,11 @@ export class User {
     @IsEmail()
     email: string;
 
-    @Prop({ unique: true })
-    @IsPhoneNumber('NG')
+    @Prop({ nullable: true })
+    @IsOptional()
     phoneNumber: string;
 
-    @Prop()
+    @Prop({nullable:true})
     password: string;
 
     @Prop({default: USERROLES.MEMEBER,enum: USERROLES})
