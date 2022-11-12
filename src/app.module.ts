@@ -13,7 +13,7 @@ import config from './config/configuration'
       isGlobal: true,
       load:[config]
     }),
-    MongooseModule.forRoot('mongodb://localhost/riilfit'),
+    MongooseModule.forRoot(process.env.MONGO_URL),
     UserModule,
     AuthModule],
 })

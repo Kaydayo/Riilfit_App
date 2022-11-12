@@ -1,3 +1,5 @@
+import { User } from "../user/schemas/user.schema";
+
 export type Payload = {
     email: string;
 }
@@ -17,4 +19,13 @@ export type GooglePayload = {
     accessToken: string;
     refreshToken: string;
     id: string;
+}
+
+export interface ResponseSwagger  {
+    success: boolean;
+    payload: {
+        user: User;
+        token: string
+    };
+    statusCode: boolean
 }
