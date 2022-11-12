@@ -1,6 +1,7 @@
 import { Body, Controller, Get, HttpStatus, Logger, Post, Req, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Request } from '../client/request';
+import BaseService from '../service/base.service';
 import { SignUpDto } from '../user/dto/sign-up.dto';
 import { UserService } from '../user/user.service';
 import { ResponseDTO } from '../utils/response.dto';
@@ -8,13 +9,13 @@ import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 
 @Controller('auth')
-export class AuthController {
+export class AuthController extends BaseService {
     private logger: Logger = new Logger('AUTH CONTROLLER')
     constructor(
         private userService: UserService,
         private authService: AuthService
     ) {
-       
+       super()
     }
 
     @Post('register')
@@ -36,9 +37,7 @@ export class AuthController {
     @Get("/facebook/redirect")
     @UseGuards(AuthGuard("facebook"))
     async facebookLoginRedirect(@Req() req: Request): Promise<any> {
-        return {
-            statusCode: HttpStatus.OK,
-            data: req.user,
-        };
+        return this.userService.registerByFacebook(req.user['user'])
+       
     }
 }
