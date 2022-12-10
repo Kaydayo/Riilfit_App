@@ -9,6 +9,7 @@ import { AuthService } from '../auth/auth.service';
 import { ConfigService } from '@nestjs/config';
 import { AuthModule } from '../auth/auth.module';
 import { Otp, OtpSchema } from './schemas/otp.schema';
+import { OtpService } from '../otp/otp.service';
 
 
 @Global()
@@ -17,7 +18,7 @@ import { Otp, OtpSchema } from './schemas/otp.schema';
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema },{name:Otp.name, schema:OtpSchema}]),
     AuthModule
   ],
-  providers: [UserService, HashService, AuthService,ConfigService],
+  providers: [UserService, HashService, AuthService,ConfigService,OtpService],
   controllers: [UserController],
   exports:[UserService, HashService]
 })

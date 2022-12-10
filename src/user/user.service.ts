@@ -4,22 +4,29 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { AuthService } from '../auth/auth.service';
 import { LoginDto } from '../auth/dto/login.dto';
+import { OtpService } from '../otp/otp.service';
 import BaseService from '../service/base.service';
-import { REGISTEROPTIONS } from '../utils/enum';
+import { OtpStatus, OtpType, OtpUsage, REGISTEROPTIONS } from '../utils/enum';
 import { ResponseDTO } from '../utils/response.dto';
 import { FacebookPayload, GooglePayload, Payload } from '../utils/types';
 import { SignUpDto } from './dto/sign-up.dto';
 import { HashService } from './hash.service';
+import { Otp } from './schemas/otp.schema';
 import { User } from './schemas/user.schema';
+import * as speakeasy from "speakeasy";
 
 @Injectable()
 export class UserService extends BaseService {
     private logger: Logger
     constructor(
         @InjectModel(User.name) private userModel: Model<User>,
+        @InjectModel(Otp.name) private otpModel: Model<Otp>,
         private readonly configService: ConfigService,
         private hashService: HashService,
-        private authService: AuthService
+        private authService: AuthService,
+        private otpService: OtpService,
+        
+
     ) {
         super()
         this.logger = new Logger('USER SERVICE')
@@ -170,8 +177,57 @@ export class UserService extends BaseService {
         }
     }
 
-  
+    
+    async initResetPassword(email:string): Promise<ResponseDTO>{
+        try {
 
+            const findUserByEmail = await this.userModel.findOne({ email })
+            if (!findUserByEmail) {
+                return this.sendFailedResponse({},"User does not exist")
+            }
+            const token = speakeasy.totp({
+                secret: process.env.OTP_SECRET,
+                encoding: "base32",
+            });
+
+            let _otp = await this.otpService.findOneByEmail(email) 
+            let currentTime = Date.now()
+            if (_otp){
+                let latestOtp: any = await this.otpModel
+                    .find({ email: email, usage:OtpUsage.RESETPIN})
+                    .sort({ updatedTime: -1 })
+                    .limit(1);
+                if (latestOtp !== undefined) {
+                    let diff = (currentTime - latestOtp[0].expiry) / 1000;
+                    let updateTime: number = Date.now();
+                    let createDto: Otp = {
+                        otp: token,
+                        email: email,
+                        expiry: updateTime + 15 * 60 * 1000,
+                        type: OtpType.EMAIL,
+                        usage:OtpUsage.RESETPIN ,
+                        status: OtpStatus.UNUSED,
+                    };
+
+                    if (diff > 0) {
+                        let _otp = await this.otpService.createOtp(createDto)
+                        let _data =
+                            "Otp sent to registered email " +
+                            email +
+                            " " +
+                            "token:" +
+                            token;
+                        await this.m
+                    }
+
+                }
+            }
+
+            
+        } catch (error) {
+            
+        }
+    }
 
 
 

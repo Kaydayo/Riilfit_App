@@ -36,7 +36,7 @@ export class Otp {
     usage: string;
 
     @Prop()
-    expiry: string
+    expiry: number;
 
     @Prop()
     status: string;

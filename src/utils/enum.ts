@@ -16,3 +16,17 @@ export enum EmailSubject {
 export enum EmailTemplates {
     RESETPINOTP = 'otp-reset-pin'
 }
+
+export enum OtpType  {
+   
+    EMAIL = "email"
+}
+
+export enum OtpUsage{
+    RESETPIN = "Reset Pin"
+}
+
+export enum OtpStatus{
+    USED = "used",
+    UNUSED="unused"
+}

@@ -9,13 +9,15 @@ import { HashService } from '../user/hash.service';
 import { JwtStrategy } from './jwt.strategy';
 import { FacebookStrategy } from './facebook.strategy';
 import { GoogleStrategy } from './google.strategy';
+import { Otp, OtpSchema } from '../user/schemas/otp.schema';
+import { OtpService } from '../otp/otp.service';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
+    MongooseModule.forFeature([{ name: User.name, schema: UserSchema }, { name: Otp.name, schema: OtpSchema }]),
     forwardRef(() => UserModule)
   ],
-  providers: [AuthService,UserService, HashService, JwtStrategy, FacebookStrategy, GoogleStrategy],
+  providers: [AuthService,UserService, HashService, JwtStrategy, FacebookStrategy, GoogleStrategy,OtpService],
   controllers: [AuthController],
   exports:[AuthService]
 })
