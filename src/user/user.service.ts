@@ -14,6 +14,7 @@ import { HashService } from './hash.service';
 import { Otp } from './schemas/otp.schema';
 import { User } from './schemas/user.schema';
 import * as speakeasy from "speakeasy";
+import { MailService } from '../mail/mail.service';
 
 @Injectable()
 export class UserService extends BaseService {
@@ -25,7 +26,8 @@ export class UserService extends BaseService {
         private hashService: HashService,
         private authService: AuthService,
         private otpService: OtpService,
-        
+        private mailService: MailService,
+
 
     ) {
         super()
@@ -217,7 +219,11 @@ export class UserService extends BaseService {
                             " " +
                             "token:" +
                             token;
-                        await this.m
+                        await this.mailService.sendOtpResetText(findUserByEmail, findUserByEmail.fullName, token)
+                        return this.sendSuccessResponse({},_data)
+                    } else {
+                        let errorData = "Otp sent yet to expire in" + diff + "seconds";
+                        throw new BadRequestException(OTP_NOT_EXPIRED(errorData));
                     }
 
                 }
