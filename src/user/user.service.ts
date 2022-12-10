@@ -45,7 +45,7 @@ export class UserService extends BaseService {
 
             const jwtPayload = {
 
-                email: user.email,
+                email: createdUser.email,
             };
             this.logger.log(user)
 
@@ -53,7 +53,8 @@ export class UserService extends BaseService {
             ;
             return this.sendSuccessResponse({ user: parsedUser, token }, "signed up successfully");
         } catch (error) {
-            return this.sendFailedResponse({}, "an error occurred")
+            console.log(error)
+            return this.sendFailedResponse({error:error.message}, "an error occurred")
             // return
         }
     }
@@ -168,6 +169,8 @@ export class UserService extends BaseService {
             return this.sendFailedResponse({}, "Facebook login unsuccessful")
         }
     }
+
+  
 
 
 

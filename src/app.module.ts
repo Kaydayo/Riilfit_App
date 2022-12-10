@@ -4,6 +4,7 @@ import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { User, UserSchema } from './user/schemas/user.schema';
 import { ConfigModule } from '@nestjs/config';
+import { MailModule } from './mail/mail.module';
 import config from './config/configuration'
 
 
@@ -15,6 +16,7 @@ import config from './config/configuration'
     }),
     MongooseModule.forRoot(process.env.MONGO_URL),
     UserModule,
-    AuthModule],
+    AuthModule,
+    MailModule],
 })
 export class AppModule {}
