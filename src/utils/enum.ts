@@ -8,3 +8,11 @@ export enum REGISTEROPTIONS{
     FACEBOOK = 'facebook',
     GOOGLE='google'
 }
+
+export enum EmailSubject {
+    RESETPINOTP = 'Reset Pin'
+}
+
+export enum EmailTemplates {
+    RESETPINOTP = 'otp-reset-pin'
+}
