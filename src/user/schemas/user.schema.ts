@@ -44,6 +44,9 @@ export class User {
 
     @Prop()
     socialId: string;
+
+    @Prop({ default: false })
+    isPhoneNumberVerified: boolean;
   
 }
 

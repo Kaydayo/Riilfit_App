@@ -9,6 +9,7 @@ import config from './config/configuration'
 import { MailerModule } from '@nestjs-modules/mailer';
 import { join } from 'path';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
+import { OtpModule } from './otp/otp.module';
 
 
 @Module({
@@ -40,7 +41,8 @@ import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handleba
         }
 
       }
-    })
+    }),
+    OtpModule
   ],
 })
 export class AppModule {}
