@@ -34,7 +34,16 @@ export class MailService extends BaseService {
 
     async sendOtpResetText(payload: any, name: string, otp: string): Promise<ResponseDTO>{
         try {
-            
+            payload.name = name
+            payload.otp = otp
+            const newPayload = { ...payload }
+            const checkMailStatus = await this.mailService.sendMail({
+                to: payload.email,
+                from: this.fromEmail,
+                subject: EmailSubject.RESETPINOTP,
+                text: `Kindly reset pin with these code ${otp}`
+            })
+            return this.sendSuccessResponse({}, 'success')
         } catch (error) {
             
         }
