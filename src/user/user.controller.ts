@@ -2,6 +2,7 @@ import { Body, Controller, Logger, Post } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import BaseService from '../service/base.service';
 import { ResponseDTO } from '../utils/response.dto';
+import { FinishResetPassowordDto } from './dto/finish-reset-password.dto';
 import { initResetPasswordDto } from './dto/init-reset-password.dto';
 import { UserService } from './user.service';
 
@@ -34,7 +35,7 @@ export class UserController extends BaseService {
         description: "reset password with otp"
     })
     @Post('/finishResetPassword')
-    async finishResetPassword(@Body() payload: { email: string, otp: string, newPassword:string }): Promise<ResponseDTO> {
+    async finishResetPassword(@Body() payload: FinishResetPassowordDto): Promise<ResponseDTO> {
         return await this.userService.finishResetPassoword(payload)
     }
 }
