@@ -44,10 +44,10 @@ export class MailService extends BaseService {
                 text: `Kindly reset pin with these code ${otp}`,
                 html: `<p>Kindly reset pin with these code ${otp}</p>`
             })
-            console.log(checkMailStatus)
+         
             return this.sendSuccessResponse({}, 'success')
         } catch (error) {
-            console.log("FROM HERE",error)
+            
         }
     }
 

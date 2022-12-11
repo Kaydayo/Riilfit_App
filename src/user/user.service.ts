@@ -66,7 +66,7 @@ export class UserService extends BaseService {
             await this.smsService.initiatePhoneNumberVerification(parsedUser.phoneNumber)
             return this.sendSuccessResponse({ user: parsedUser, token }, `Signed up successfully, We have sent a verification code to ${parsedUser.phoneNumber}`);
         } catch (error) {
-            console.log(error)
+            
             return this.sendFailedResponse({ error: error.message }, "an error occurred")
             // return
         }
@@ -178,7 +178,7 @@ export class UserService extends BaseService {
 
             return this.sendSuccessResponse({ user: parsedUser, token }, "google log in successfully");
         } catch (error) {
-            console.log(error)
+        
             return this.sendFailedResponse({}, "Facebook login unsuccessful")
         }
     }
@@ -258,21 +258,21 @@ export class UserService extends BaseService {
             return this.sendSuccessResponse({user:parsedUser,token},"password reset successful")
             
         } catch (error) {
-            console.log(error)
+        
             return this.sendFailedResponse({error:error.message},"an error occurred")
         }
     }
 
     async markPhoneNumberAsConfirmed(userEmail:any): Promise<User | undefined>{
         try {
-            console.log(userEmail, "USERID")
+         
             const findUserByEmail = await this.userModel.findOne({email:userEmail})
             if (!findUserByEmail) {
                 return undefined
             }
             return await this.userModel.findOneAndUpdate({email:userEmail}, { isPhoneNumberVerified:true }, {new: true})
         } catch (error) {
-            console.log(error)
+           
             return undefined
         }
     }

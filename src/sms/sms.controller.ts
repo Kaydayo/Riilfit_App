@@ -19,7 +19,7 @@ export class SmsController extends BaseService {
         if (req.user.isPhoneNumberVerified) {
             throw new BadRequestException('Phone number already confirmed');
         }
-        console.log(req.user)
+        
         await this.smsService.initiatePhoneNumberVerification(req.user.phoneNumber);
     }
 
