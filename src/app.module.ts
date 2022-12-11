@@ -10,6 +10,7 @@ import { MailerModule } from '@nestjs-modules/mailer';
 import { join } from 'path';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 import { OtpModule } from './otp/otp.module';
+import { SmsModule } from './sms/sms.module';
 import * as path from 'path';
 
 
@@ -45,7 +46,8 @@ import * as path from 'path';
 
       }
     }),
-    OtpModule
+    OtpModule,
+    SmsModule
   ],
 })
 export class AppModule {}
