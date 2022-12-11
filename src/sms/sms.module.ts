@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AuthModule } from '../auth/auth.module';
 import { AuthService } from '../auth/auth.service';
@@ -16,11 +16,11 @@ import { SmsService } from './sms.service';
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }, { name: Otp.name, schema: OtpSchema }]),
     OtpModule,
     AuthModule,
-    UserModule,
-    MailModule
+    MailModule,
+    forwardRef(()=>UserModule)
   ],
   controllers: [SmsController],
-  providers: [SmsService, AuthService, UserService],
+  providers: [SmsService],
   exports:[SmsService]
 })
 export class SmsModule {}

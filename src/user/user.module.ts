@@ -1,4 +1,4 @@
-import { Global, Module } from '@nestjs/common';
+import { forwardRef, Global, Module } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UserController } from './user.controller';
 import { Mongoose } from 'mongoose';
@@ -11,17 +11,20 @@ import { AuthModule } from '../auth/auth.module';
 import { Otp, OtpSchema } from './schemas/otp.schema';
 import { OtpService } from '../otp/otp.service';
 import { MailModule } from '../mail/mail.module';
+import { SmsModule } from '../sms/sms.module';
+import { SmsService } from '../sms/sms.service';
 
 
 @Global()
 @Module({
   imports: [
-    MongooseModule.forFeature([{ name: User.name, schema: UserSchema },{name:Otp.name, schema:OtpSchema}]),
+    MongooseModule.forFeature([{ name: User.name, schema: UserSchema }, { name: Otp.name, schema: OtpSchema }]),
     AuthModule,
-    MailModule
+    MailModule,
+    SmsModule,
   ],
-  providers: [UserService, HashService, AuthService,ConfigService,OtpService],
+  providers: [UserService, HashService, AuthService, ConfigService, OtpService],
   controllers: [UserController],
-  exports:[UserService, HashService]
+  exports: [UserService, HashService]
 })
-export class UserModule {}
+export class UserModule { }

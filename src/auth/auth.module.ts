@@ -12,6 +12,7 @@ import { GoogleStrategy } from './google.strategy';
 import { Otp, OtpSchema } from '../user/schemas/otp.schema';
 import { OtpService } from '../otp/otp.service';
 import { MailModule } from '../mail/mail.module';
+import { SmsService } from '../sms/sms.service';
 
 @Module({
   imports: [
@@ -19,7 +20,7 @@ import { MailModule } from '../mail/mail.module';
     forwardRef(() => UserModule),
     MailModule
   ],
-  providers: [AuthService,UserService, HashService, JwtStrategy, FacebookStrategy, GoogleStrategy,OtpService],
+  providers: [AuthService,UserService, HashService, JwtStrategy, FacebookStrategy, GoogleStrategy,OtpService, SmsService],
   controllers: [AuthController],
   exports:[AuthService]
 })

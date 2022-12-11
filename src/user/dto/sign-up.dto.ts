@@ -18,7 +18,6 @@ export class SignUpDto{
     @IsNotEmpty()
     @IsString()
     @IsPhoneNumber('NG')
-    @Matches(/^\+[1-9]\d{1,14}$/)
     phoneNumber: string;
 
     @ApiProperty({ example: "nME110_t", description:"must include lower case, upper case, maxlength of 20 and min of 4" })

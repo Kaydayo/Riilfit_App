@@ -15,6 +15,7 @@ import { Otp } from './schemas/otp.schema';
 import { User } from './schemas/user.schema';
 import * as speakeasy from "speakeasy";
 import { MailService } from '../mail/mail.service';
+import { SmsService } from '../sms/sms.service';
 
 @Injectable()
 export class UserService extends BaseService {
@@ -22,11 +23,11 @@ export class UserService extends BaseService {
     constructor(
         @InjectModel(User.name) private userModel: Model<User>,
         @InjectModel(Otp.name) private otpModel: Model<Otp>,
-        private readonly configService: ConfigService,
         private hashService: HashService,
         private authService: AuthService,
         private otpService: OtpService,
         private mailService: MailService,
+        private smsService:SmsService
 
 
     ) {
@@ -61,8 +62,9 @@ export class UserService extends BaseService {
             this.logger.log(user)
 
             const token = await this.authService.signPayload(jwtPayload);
-            ;
-            return this.sendSuccessResponse({ user: parsedUser, token }, "signed up successfully");
+            
+            await this.smsService.initiatePhoneNumberVerification(parsedUser.phoneNumber)
+            return this.sendSuccessResponse({ user: parsedUser, token }, `Signed up successfully, We have sent a verification code to ${parsedUser.phoneNumber}`);
         } catch (error) {
             console.log(error)
             return this.sendFailedResponse({ error: error.message }, "an error occurred")
@@ -261,13 +263,14 @@ export class UserService extends BaseService {
         }
     }
 
-    async markPhoneNumberAsConfirmed(userId:any): Promise<User | undefined>{
+    async markPhoneNumberAsConfirmed(userEmail:any): Promise<User | undefined>{
         try {
-            const findUserById = await this.userModel.findById(userId)
-            if (!findUserById) {
+            console.log(userEmail, "USERID")
+            const findUserByEmail = await this.userModel.findOne({email:userEmail})
+            if (!findUserByEmail) {
                 return undefined
             }
-            return await this.userModel.findByIdAndUpdate(userId, { isPhoneNumberVerified:true }, {new: true, upsert:true})
+            return await this.userModel.findOneAndUpdate({email:userEmail}, { isPhoneNumberVerified:true }, {new: true})
         } catch (error) {
             return undefined
         }

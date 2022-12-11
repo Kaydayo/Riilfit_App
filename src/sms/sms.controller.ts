@@ -29,7 +29,7 @@ export class SmsController extends BaseService {
         if (request.user.isPhoneNumberVerified) {
             return this.sendFailedResponse({},"Phone number already verified")
         }
-        await this.smsService.confirmPhoneNumber(request.user.id, request.user.phoneNumber, verificationData.code);
+       return await this.smsService.confirmPhoneNumber(request.user.email, request.user.phoneNumber, verificationData.code);
     }
 
 

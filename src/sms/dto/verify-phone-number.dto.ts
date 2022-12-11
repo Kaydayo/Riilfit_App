@@ -3,9 +3,9 @@ import { IsEmail, IsNotEmpty, IsPhoneNumber, IsString, Length, Matches, MaxLengt
 
 
 export class CheckVerificationCodeDto {
-    @ApiProperty({ example: "1234" })
+    @ApiProperty({ example: "123456" })
     @IsNotEmpty()
     @IsString()
-    @Length(4, 4)
+    @Length(6, 6)
     code: string;
 }

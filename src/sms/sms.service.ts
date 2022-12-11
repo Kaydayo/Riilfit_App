@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, forwardRef, Inject, Injectable } from '@nestjs/common';
 import { Twilio } from 'twilio';
 import { AuthService } from '../auth/auth.service';
 import BaseService from '../service/base.service';
@@ -10,7 +10,7 @@ export class SmsService extends BaseService {
    
 
     constructor(
-        private userService: UserService,
+        @Inject(forwardRef(()=>UserService))private userService: UserService,
         private authService: AuthService
     ) {
         super()
@@ -36,7 +36,7 @@ export class SmsService extends BaseService {
     }
 
 
-    async confirmPhoneNumber(userId: string, phoneNumber: string, verificationCode: string) {
+    async confirmPhoneNumber(userEmail: string, phoneNumber: string, verificationCode: string) {
         try {
             const serviceSid = process.env.TWILIO_VERIFICATION_SERVICE_SID;
 
@@ -48,8 +48,8 @@ export class SmsService extends BaseService {
                 return this.sendFailedResponse({}, "Wrong code provided")
             }
 
-            const updateVerification = await this.userService.markPhoneNumberAsConfirmed(userId)
-
+            const updateVerification = await this.userService.markPhoneNumberAsConfirmed(userEmail)
+            console.log(updateVerification)
             if (!updateVerification) {
                 return this.sendFailedResponse({}, "sorry an error occurred")
             }
@@ -61,6 +61,7 @@ export class SmsService extends BaseService {
             const token = await this.authService.signPayload(jwtPayload)
             return this.sendSuccessResponse({user:updateVerification,token},"Phone number verified successfully")
         } catch (error) {
+            console.log(error)
             return this.sendFailedResponse({},"an error occurred")
         }
     }
