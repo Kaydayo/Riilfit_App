@@ -8,10 +8,10 @@ export class FinishResetPassowordDto {
     @IsEmail()
     email: string;
 
-    @ApiProperty({ example: "123456" })
+    @ApiProperty({ example: "1234" })
     @IsNotEmpty()
     @IsString()
-    @Length(6, 6)
+    @Length(4, 4)
     otp: string;
 
     @ApiProperty({ example: "nME110_t", description: "must include lower case, upper case, maxlength of 20 and min of 4" })

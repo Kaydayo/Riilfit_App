@@ -261,6 +261,17 @@ export class UserService extends BaseService {
         }
     }
 
+    async markPhoneNumberAsConfirmed(userId:any): Promise<User | undefined>{
+        try {
+            const findUserById = await this.userModel.findById(userId)
+            if (!findUserById) {
+                return undefined
+            }
+            return await this.userModel.findByIdAndUpdate(userId, { isPhoneNumberVerified:true }, {new: true, upsert:true})
+        } catch (error) {
+            return undefined
+        }
+    }
 
     sanitizeUser(user: any) {
         const sanitized = user.toObject({ virtuals: false });

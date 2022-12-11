@@ -1,24 +1,67 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { Twilio } from 'twilio';
+import { AuthService } from '../auth/auth.service';
+import BaseService from '../service/base.service';
+import { UserService } from '../user/user.service';
 
 @Injectable()
-export class SmsService {
+export class SmsService extends BaseService {
     private twilioClient: Twilio;
+   
 
     constructor(
-        
+        private userService: UserService,
+        private authService: AuthService
     ) {
+        super()
         const accountSid = process.env.TWILO_ACCOUNT_SID;
         const authToken = process.env.TWILO_AUTH_TOKEN;
 
         this.twilioClient = new Twilio(accountSid, authToken);
     }
 
-    initiatePhoneNumberVerification(phoneNumber: string) {
-        const serviceSid = process.env.TWILIO_VERIFICATION_SERVICE_SID;
+    async initiatePhoneNumberVerification(phoneNumber: string) {
+       try {
+           const serviceSid = process.env.TWILIO_VERIFICATION_SERVICE_SID;
 
-        return this.twilioClient.verify.services(serviceSid)
-            .verifications
-            .create({ to: phoneNumber, channel: 'sms' })
+           const smsSentStatus = await this.twilioClient.verify.services(serviceSid)
+               .verifications
+               .create({ to: phoneNumber, channel: 'sms' })
+
+           return this.sendSuccessResponse({}, `Verification code sent to ${phoneNumber}`)
+       } catch (error) {
+           return this.sendFailedResponse({},"an error occurred")
+       }
+
+    }
+
+
+    async confirmPhoneNumber(userId: string, phoneNumber: string, verificationCode: string) {
+        try {
+            const serviceSid = process.env.TWILIO_VERIFICATION_SERVICE_SID;
+
+            const result = await this.twilioClient.verify.services(serviceSid)
+                .verificationChecks
+                .create({ to: phoneNumber, code: verificationCode })
+
+            if (!result.valid || result.status !== 'approved') {
+                return this.sendFailedResponse({}, "Wrong code provided")
+            }
+
+            const updateVerification = await this.userService.markPhoneNumberAsConfirmed(userId)
+
+            if (!updateVerification) {
+                return this.sendFailedResponse({}, "sorry an error occurred")
+            }
+
+            const jwtPayload = {
+                email: updateVerification.email
+            }
+
+            const token = await this.authService.signPayload(jwtPayload)
+            return this.sendSuccessResponse({user:updateVerification,token},"Phone number verified successfully")
+        } catch (error) {
+            return this.sendFailedResponse({},"an error occurred")
+        }
     }
 }

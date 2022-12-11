@@ -22,10 +22,12 @@ export type UserDocument = User & Document;
     }
 })
 export class User {
+    id?: string;
+
     @Prop({ required: true })
     fullName: string;
 
-    @Prop({ unique: true, required:true })
+    @Prop({ unique: true, required: true })
     @IsEmail()
     email: string;
 
@@ -33,12 +35,12 @@ export class User {
     @IsOptional()
     phoneNumber: string;
 
-    @Prop({nullable:true})
+    @Prop({ nullable: true })
     password: string;
 
-    @Prop({default: USERROLES.MEMEBER,enum: USERROLES})
+    @Prop({ default: USERROLES.MEMEBER, enum: USERROLES })
     role: USERROLES
-    
+
     @Prop({ defaul: REGISTEROPTIONS.APP, enum: REGISTEROPTIONS })
     signOn: REGISTEROPTIONS
 
@@ -47,7 +49,7 @@ export class User {
 
     @Prop({ default: false })
     isPhoneNumberVerified: boolean;
-  
+
 }
 
 
