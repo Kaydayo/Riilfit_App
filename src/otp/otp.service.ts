@@ -18,6 +18,10 @@ export class OtpService extends BaseService {
         return await this.otpModel.create(payload)
     }
 
+    async findByQuery(query:any): Promise<any>{
+        return await this.otpModel.findOne(query)
+    }
+
 
     
 }

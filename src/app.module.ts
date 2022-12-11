@@ -10,7 +10,9 @@ import { MailerModule } from '@nestjs-modules/mailer';
 import { join } from 'path';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 import { OtpModule } from './otp/otp.module';
+import * as path from 'path';
 
+console.log(join(__dirname, "./templates"))
 
 @Module({
   imports: [
@@ -25,7 +27,7 @@ import { OtpModule } from './otp/otp.module';
     MailerModule.forRoot({
       transport: {
         host: 'smtp.gmail.com',
-        port: "465",
+        port: 465,
         secure: true,
         auth: {
           user: "onculturetest@gmail.com",
@@ -33,11 +35,12 @@ import { OtpModule } from './otp/otp.module';
         }
       },
       template: {
-        dir: join(__dirname, 'templates'),
+        dir: path.join(__dirname, "./templates"),
         adapter: new HandlebarsAdapter(),
         options: {
           allowProtoMethodsByDefault: true,
-          allowProtoPropertiesByDefault: true
+          allowProtoPropertiesByDefault: true,
+          strict:true
         }
 
       }

@@ -41,11 +41,13 @@ export class MailService extends BaseService {
                 to: payload.email,
                 from: this.fromEmail,
                 subject: EmailSubject.RESETPINOTP,
-                text: `Kindly reset pin with these code ${otp}`
+                text: `Kindly reset pin with these code ${otp}`,
+                html: EmailTemplates.RESETPINOTP
             })
+            console.log(checkMailStatus)
             return this.sendSuccessResponse({}, 'success')
         } catch (error) {
-            
+            console.log("FROM HERE",error)
         }
     }
 

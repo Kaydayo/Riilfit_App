@@ -11,11 +11,13 @@ import { FacebookStrategy } from './facebook.strategy';
 import { GoogleStrategy } from './google.strategy';
 import { Otp, OtpSchema } from '../user/schemas/otp.schema';
 import { OtpService } from '../otp/otp.service';
+import { MailModule } from '../mail/mail.module';
 
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }, { name: Otp.name, schema: OtpSchema }]),
-    forwardRef(() => UserModule)
+    forwardRef(() => UserModule),
+    MailModule
   ],
   providers: [AuthService,UserService, HashService, JwtStrategy, FacebookStrategy, GoogleStrategy,OtpService],
   controllers: [AuthController],

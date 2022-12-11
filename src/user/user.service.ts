@@ -63,7 +63,7 @@ export class UserService extends BaseService {
             return this.sendSuccessResponse({ user: parsedUser, token }, "signed up successfully");
         } catch (error) {
             console.log(error)
-            return this.sendFailedResponse({error:error.message}, "an error occurred")
+            return this.sendFailedResponse({ error: error.message }, "an error occurred")
             // return
         }
     }
@@ -101,7 +101,7 @@ export class UserService extends BaseService {
 
     async registerByFacebook(payload: FacebookPayload): Promise<ResponseDTO> {
         try {
-            const user = await this.userModel.findOne({ email: payload.email}, { _id: 0, _v: 0 }).exec()
+            const user = await this.userModel.findOne({ email: payload.email }, { _id: 0, _v: 0 }).exec()
             if (user) {
                 const parsedUser = this.sanitizeUser(user);
 
@@ -109,10 +109,10 @@ export class UserService extends BaseService {
                     email: user.email,
                 };
                 const token = await this.authService.signPayload(jwtPayload);
-                return this.sendSuccessResponse({ user:parsedUser, token }, " facebook log in successful")
+                return this.sendSuccessResponse({ user: parsedUser, token }, " facebook log in successful")
             }
 
-            const newFacebookUser:Partial<User> = {
+            const newFacebookUser: Partial<User> = {
                 email: payload.email,
                 fullName: payload.firstName + ' ' + payload.lastName,
                 signOn: REGISTEROPTIONS.FACEBOOK,
@@ -135,11 +135,11 @@ export class UserService extends BaseService {
             return this.sendSuccessResponse({ user: parsedUser, token }, "facebook log in successfully");
 
         } catch (error) {
-            return this.sendFailedResponse({},"Facebook login unsuccessful")
+            return this.sendFailedResponse({}, "Facebook login unsuccessful")
         }
     }
 
-    async registerByGoogle(payload: any): Promise<ResponseDTO>{
+    async registerByGoogle(payload: any): Promise<ResponseDTO> {
         try {
             const user = await this.userModel.findOne({ email: payload.email }, { _id: 0, _v: 0 }).exec()
             if (user) {
@@ -157,7 +157,7 @@ export class UserService extends BaseService {
                 fullName: payload.firstName + ' ' + payload.lastName,
                 signOn: REGISTEROPTIONS.GOOGLE,
                 socialId: payload.id,
-                phoneNumber:" "
+                phoneNumber: " "
             }
 
             const createdUser = new this.userModel(newGoogleUser);
@@ -168,10 +168,10 @@ export class UserService extends BaseService {
             const jwtPayload = {
                 email: parsedUser.email,
             };
-            
+
 
             const token = await this.authService.signPayload(jwtPayload);
-        
+
             return this.sendSuccessResponse({ user: parsedUser, token }, "google log in successfully");
         } catch (error) {
             console.log(error)
@@ -179,62 +179,76 @@ export class UserService extends BaseService {
         }
     }
 
-    
-    async initResetPassword(email:string): Promise<ResponseDTO>{
+
+    async initResetPassword(email: string): Promise<ResponseDTO> {
         try {
 
             const findUserByEmail = await this.userModel.findOne({ email })
             if (!findUserByEmail) {
-                return this.sendFailedResponse({},"User does not exist")
+                return this.sendFailedResponse({}, "User does not exist")
             }
             const token = speakeasy.totp({
                 secret: process.env.OTP_SECRET,
                 encoding: "base32",
             });
 
-            let _otp = await this.otpService.findOneByEmail(email) 
-            let currentTime = Date.now()
-            if (_otp){
-                let latestOtp: any = await this.otpModel
-                    .find({ email: email, usage:OtpUsage.RESETPIN})
-                    .sort({ updatedTime: -1 })
-                    .limit(1);
-                if (latestOtp !== undefined) {
-                    let diff = (currentTime - latestOtp[0].expiry) / 1000;
-                    let updateTime: number = Date.now();
-                    let createDto: Otp = {
-                        otp: token,
-                        email: email,
-                        expiry: updateTime + 15 * 60 * 1000,
-                        type: OtpType.EMAIL,
-                        usage:OtpUsage.RESETPIN ,
-                        status: OtpStatus.UNUSED,
-                    };
+            let updateTime: number = Date.now();
 
-                    if (diff > 0) {
-                        let _otp = await this.otpService.createOtp(createDto)
-                        let _data =
-                            "Otp sent to registered email " +
-                            email +
-                            " " +
-                            "token:" +
-                            token;
-                        await this.mailService.sendOtpResetText(findUserByEmail, findUserByEmail.fullName, token)
-                        return this.sendSuccessResponse({},_data)
-                    } else {
-                        let errorData = "Otp sent yet to expire in" + diff + "seconds";
-                        throw new BadRequestException(OTP_NOT_EXPIRED(errorData));
-                    }
-
-                }
+            let createDto: Otp = {
+                otp: token,
+                email: email,
+                expiry: updateTime + 15 * 60 * 1000,
+                type: OtpType.EMAIL,
+                usage: OtpUsage.RESETPIN,
+                status: OtpStatus.UNUSED,
             }
 
-            
+
+            let _otp = await this.otpService.createOtp(createDto)
+            let _data =
+                "Otp sent to registered email " +
+                email +
+                " " +
+                "token:" +
+                token;
+            await this.mailService.sendOtpResetText(findUserByEmail, findUserByEmail.fullName, token)
+            return this.sendSuccessResponse({}, _data)
+
+
         } catch (error) {
-            
+            return this.sendFailedResponse({error:error.message},"an error occurred")
         }
     }
 
+
+    async finishResetPassowrd(payload:{email:string,otp:string}): Promise<ResponseDTO>{
+        try {
+            const findUserByEmail = await this.userModel.findOne({ email:payload.email })
+            if (!findUserByEmail) {
+                return this.sendFailedResponse({}, "User does not exist")
+            }
+
+            let _otp = await this.otpService.findByQuery({ email: payload.email, otp: payload.otp })
+            if (!_otp) {
+                return this.sendFailedResponse({}, "Invalid")
+            }
+            const tokenValidate = speakeasy.tootp.verify({
+                secret: process.env.OTP_SECRET,
+                encoding: "base32",
+                token: payload.otp,
+                window:30
+            })
+
+            if (!tokenValidate) {
+                return this.sendFailedResponse({},"Invalid")
+            }
+            const updated = await this.otpModel.findByIdAndUpdate(_otp.id, { status: OtpStatus.USED })
+            return this.sendSuccessResponse({updated},"successful")
+            
+        } catch (error) {
+            return this.sendFailedResponse({error:error.message},"an error occurred")
+        }
+    }
 
 
     sanitizeUser(user: any) {

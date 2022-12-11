@@ -1,12 +1,12 @@
 export enum USERROLES {
     MEMEBER = "member",
-    VENDOR="vendor"
+    VENDOR = "vendor"
 }
 
-export enum REGISTEROPTIONS{
+export enum REGISTEROPTIONS {
     APP = 'app',
     FACEBOOK = 'facebook',
-    GOOGLE='google'
+    GOOGLE = 'google'
 }
 
 export enum EmailSubject {
@@ -17,16 +17,16 @@ export enum EmailTemplates {
     RESETPINOTP = 'otp-reset-pin'
 }
 
-export enum OtpType  {
-   
+export enum OtpType {
+
     EMAIL = "email"
 }
 
-export enum OtpUsage{
+export enum OtpUsage {
     RESETPIN = "Reset Pin"
 }
 
-export enum OtpStatus{
+export enum OtpStatus {
     USED = "used",
-    UNUSED="unused"
+    UNUSED = "unused"
 }
