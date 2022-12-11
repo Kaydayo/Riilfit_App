@@ -1783,6 +1783,13 @@
   "resolved" "https://registry.npmjs.org/@types/node/-/node-16.18.3.tgz"
   "version" "16.18.3"
 
+"@types/nodemailer@^6.4.6":
+  "integrity" "sha512-pD6fL5GQtUKvD2WnPmg5bC2e8kWCAPDwMPmHe/ohQbW+Dy0EcHgZ2oCSuPlWNqk74LS5BVMig1SymQbFMPPK3w=="
+  "resolved" "https://registry.npmjs.org/@types/nodemailer/-/nodemailer-6.4.6.tgz"
+  "version" "6.4.6"
+  dependencies:
+    "@types/node" "*"
+
 "@types/oauth@*":
   "integrity" "sha512-a1iY62/a3yhZ7qH7cNUsxoI3U/0Fe9+RnuFrpTKr+0WVOzbKlSLojShCKe20aOD1Sppv+i8Zlq0pLDuTJnwS4A=="
   "resolved" "https://registry.npmjs.org/@types/oauth/-/oauth-0.9.1.tgz"
@@ -3987,7 +3994,7 @@
   "resolved" "https://registry.npmjs.org/grapheme-splitter/-/grapheme-splitter-1.0.4.tgz"
   "version" "1.0.4"
 
-"handlebars@^4.7.6":
+"handlebars@^4.7.6", "handlebars@^4.7.7":
   "integrity" "sha512-aAcXm5OAfE/8IXkcZvCepKU3VzW1/39Fb5ZuqMtgI/hT8X2YgoMvBY5dLhq/cpOvw7Lk1nK/UF71aLG/ZnVYRA=="
   "resolved" "https://registry.npmjs.org/handlebars/-/handlebars-4.7.7.tgz"
   "version" "4.7.7"
@@ -5830,7 +5837,7 @@
   "resolved" "https://registry.npmjs.org/node-releases/-/node-releases-2.0.6.tgz"
   "version" "2.0.6"
 
-"nodemailer@^6.4.6", "nodemailer@^6.6.3", "nodemailer@6.8.0":
+"nodemailer@^6.4.6", "nodemailer@^6.6.3", "nodemailer@^6.8.0", "nodemailer@6.8.0":
   "integrity" "sha512-EjYvSmHzekz6VNkNd12aUqAco+bOkRe3Of5jVhltqKhEsjw/y0PYPJfp83+s9Wzh1dspYAkUW/YNQ350NATbSQ=="
   "resolved" "https://registry.npmjs.org/nodemailer/-/nodemailer-6.8.0.tgz"
   "version" "6.8.0"
