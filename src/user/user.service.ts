@@ -272,6 +272,7 @@ export class UserService extends BaseService {
             }
             return await this.userModel.findOneAndUpdate({email:userEmail}, { isPhoneNumberVerified:true }, {new: true})
         } catch (error) {
+            console.log(error)
             return undefined
         }
     }
