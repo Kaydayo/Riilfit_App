@@ -12,7 +12,7 @@ import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handleba
 import { OtpModule } from './otp/otp.module';
 import * as path from 'path';
 
-console.log(join(__dirname, "./templates"))
+
 
 @Module({
   imports: [

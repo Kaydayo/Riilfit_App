@@ -42,7 +42,7 @@ export class MailService extends BaseService {
                 from: this.fromEmail,
                 subject: EmailSubject.RESETPINOTP,
                 text: `Kindly reset pin with these code ${otp}`,
-                html: EmailTemplates.RESETPINOTP
+                html: `<p>Kindly reset pin with these code ${otp}</p>`
             })
             console.log(checkMailStatus)
             return this.sendSuccessResponse({}, 'success')
