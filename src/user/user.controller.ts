@@ -1,11 +1,13 @@
-import { Body, Controller, Logger, Post } from '@nestjs/common';
+import { Body, Controller, Logger, Post, Req, UseGuards } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import BaseService from '../service/base.service';
 import { ResponseDTO } from '../utils/response.dto';
 import { FinishResetPassowordDto } from './dto/finish-reset-password.dto';
 import { initResetPasswordDto } from './dto/init-reset-password.dto';
+import { ResetPassowordDto } from './dto/reset-password.dto';
 import { UserService } from './user.service';
-
+import { Request } from '../client/request';
 
 @ApiTags('user')
 @Controller('user')
@@ -37,5 +39,17 @@ export class UserController extends BaseService {
     @Post('/finishResetPassword')
     async finishResetPassword(@Body() payload: FinishResetPassowordDto): Promise<ResponseDTO> {
         return await this.userService.finishResetPassoword(payload)
+    }
+
+    @ApiOperation({
+        summary: "finish reset password"
+    })
+    @ApiResponse({
+        description: "reset password with otp"
+    })
+    @UseGuards(AuthGuard('jwt'))
+    @Post('/resetPassword')
+    async resetPassword(@Req() req:Request, @Body() payload: ResetPassowordDto): Promise<ResponseDTO> {
+        return await this.userService.resetUserPassword(req.user.email,payload.newPassword)
     }
 }

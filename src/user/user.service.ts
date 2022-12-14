@@ -225,7 +225,7 @@ export class UserService extends BaseService {
     }
 
 
-    async finishResetPassoword(payload:{email:string,otp:string, newPassword:string}): Promise<ResponseDTO>{
+    async finishResetPassoword(payload:{email:string,otp:string}): Promise<ResponseDTO>{
         try {
             const findUserByEmail = await this.userModel.findOne({ email:payload.email })
             if (!findUserByEmail) {
@@ -246,20 +246,42 @@ export class UserService extends BaseService {
                 return this.sendFailedResponse({},"Invalid")
             }
             const updated = await this.otpModel.findByIdAndUpdate(_otp.id, { status: OtpStatus.USED })
-            findUserByEmail.password = await this.hashService.hashPassword(payload.newPassword)
-            const updatedUser = await this.updateUserData(findUserByEmail)
+            // findUserByEmail.password = await this.hashService.hashPassword(payload.newPassword)
+            // const updatedUser = await this.updateUserData(findUserByEmail)
 
-            const parsedUser = this.sanitizeUser(updatedUser)
+            const parsedUser = this.sanitizeUser(findUserByEmail)
             const jwtPayload = {
                 email: payload.email
             }
 
             const token = await this.authService.signPayload(jwtPayload)
-            return this.sendSuccessResponse({user:parsedUser,token},"password reset successful")
+            return this.sendSuccessResponse({user:parsedUser,token},"otp verified successfully")
             
         } catch (error) {
-        
             return this.sendFailedResponse({error:error.message},"an error occurred")
+        }
+    }
+
+    async resetUserPassword(email:string, newPassword:string):Promise<ResponseDTO>{
+        try {
+            const findUserByEmail = await this.userModel.findOne({ email })
+            if (!findUserByEmail) {
+                return this.sendFailedResponse({}, "User does not exist")
+            }
+
+            findUserByEmail.password = await this.hashService.hashPassword(newPassword)
+            const updatedUser = await this.updateUserData(findUserByEmail)
+
+            const parsedUser = this.sanitizeUser(updatedUser)
+            const jwtPayload = {
+                email
+            }
+
+            const token = await this.authService.signPayload(jwtPayload)
+            return this.sendSuccessResponse({ user: parsedUser, token }, "password updated successfully")
+
+        } catch (error) {
+            return this.sendFailedResponse({ error: error.message }, "an error occurred")
         }
     }
 
