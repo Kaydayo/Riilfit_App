@@ -31,8 +31,8 @@ import * as path from 'path';
         port: 465,
         secure: true,
         auth: {
-          user: "onculturetest@gmail.com",
-          pass: "vfpolcmkzruocped"
+          user: process.env.RIILFIT_EMAIL,
+          pass: process.env.RIILFIT_PASS
         }
       },
       template: {
